@@ -12,4 +12,4 @@ cd sipedon
 pip3 install .
 ```
 
-After this, you can run the project by typing `sipedon`, if the PIP binary location is in your `$PATH` or `python3 -m sipedon`.
+After this, you can run the project by typing `sipedon`, if the PIP binary location is in your `$PATH`, or `python3 -m sipedon` otherwise.
