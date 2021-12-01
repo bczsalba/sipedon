@@ -4,7 +4,7 @@
 [![PyPI version](https://raw.githubusercontent.com/bczsalba/sipedon/master/assets/version.svg)]()
 [![Pylint quality](https://raw.githubusercontent.com/bczsalba/sipedon/master/assets/quality.svg)](https://github.com/bczsalba/sipedon/blob/master/utils/create_badge.py)
 
-The project got its name from the Common Watersnake, also known as `Nerioda Sipedon`. It is meant to be an example project for the `pytermgui` framework, but later down the line might become its own entity as TUI game.
+The project got its name from the Common Watersnake, also known as `Nerodia Sipedon`. It is meant to be an example project for the `pytermgui` framework, but later down the line might become its own entity as TUI game.
 
 Updates might not be too frequent, as the parent framework enjoys priority at the moment. This is a passion project of mine however, so I do not plan on abandoning it.
 
