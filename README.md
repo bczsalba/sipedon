@@ -14,4 +14,4 @@ pip3 install .
 
 After this, you can run the project by typing `sipedon`, if the PIP binary location is in your `$PATH`, or `python3 -m sipedon` otherwise.
 
-![screenshot](https://raw.githubusercontent.com/bczsalba/sipedon/master/img/screenshot.png)
+![screenshot](https://raw.githubusercontent.com/bczsalba/sipedon/master/assets/screenshot.png)
