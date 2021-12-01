@@ -8,13 +8,13 @@ The project got its name from the Common Watersnake, also known as `Nerodia Sipe
 
 Updates might not be too frequent, as the parent framework enjoys priority at the moment. This is a passion project of mine however, so I do not plan on abandoning it.
 
-As I'm not quite sure about the naming yet, so it is not available on PyPI at the moment. As such, to install it you should follow these steps:
+It is not available on PyPI at the moment, as I'm not quite sure about the naming yet. As such, to install it you should follow these steps:
 ```bash
 git clone https://github.com/bczsalba/sipedon
 cd sipedon
 pip3 install .
 ```
 
-After this, you can run the project by typing `sipedon`, if the PIP binary location is in your `$PATH`, or `python3 -m sipedon` otherwise.
+After this, you can run the project by typing `sipedon` if the PIP binary location is in your `$PATH`, or `python3 -m sipedon` otherwise.
 
 ![screenshot](https://raw.githubusercontent.com/bczsalba/sipedon/master/assets/screenshot.png)
