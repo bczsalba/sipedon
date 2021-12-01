@@ -34,7 +34,7 @@ todo:
 	python3 utils/list_todos.py \"\`grep -rnw . -e '# TODO'\`\"" > $VIM_PROJPATH/Makefile
 }
 
-export VIM_PROJNAME="sipeodn"
+export VIM_PROJNAME="sipedon"
 export VIM_PROJPATH="$(realpath `dirname $BASH_SOURCE`)"
 export VIM_COMMAND="python3 -m sipedon"
 export VIM_NOTES="$VIM_PROJPATH/notes.md"
