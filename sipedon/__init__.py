@@ -15,6 +15,8 @@ import pytermgui as ptg
 from .classes import Aquarium, Fish
 from .windows import AquariumWindow, AquariumDebugger
 
+__version__ = "0.0.0"
+
 
 class BottomDweller(Fish):
     """A fish who lives at the bottom of the tank"""

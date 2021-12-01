@@ -172,9 +172,7 @@ class AquariumDebugger(ptg.Window):
                 _get_auto(f"{'Manager framerate':<20}: {str(self.manager.fps):>5}")
             )
 
-        targeted = sorted(
-            [food for food in self._target.aquarium.food], key=lambda f: f.targeters
-        )
+        # targeted = sorted(self._target.aquarium.food, key=lambda f: f.targeters)
         # if len(targeted) > 0:
         #     largest_targeted = targeted[-1]
 

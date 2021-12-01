@@ -5,13 +5,18 @@ author: bczsalba
 
 
 This module provides all the game logic for the module.
-It is essentially an implementation of the classes defined in 
+It is essentially an implementation of the classes defined in
 `classes`, so if you want to create your own application using
 the names defined there this module can be ignored.
 """
 
+# This is very WIP, will not pass any linting checks.
+# pylint: disable-all
+# mypy: ignore-errors
+
 from __future__ import annotations
 
+from typing import Any
 import pytermgui as ptg
 
 from .windows import AquariumWindow

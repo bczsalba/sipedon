@@ -408,9 +408,7 @@ class Fish(AquariumChild):  # pylint: disable=too-many-instance-attributes
     def print(self) -> None:
         """Print Fish to its `pos`"""
 
-        ptg.save_cursor()
         print(str(self))
-        ptg.restore_cursor()
 
 
 class Aquarium:
