@@ -9,7 +9,7 @@ setup(
     description="",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    install_requires=["pytermgui"],
+    install_requires=["pytermgui==1.1.0"],
     python_requires=">=3.7.0",
     url="https://github.com/bczsalba/sipedon",
     author="BcZsalba",
