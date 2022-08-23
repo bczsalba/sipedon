@@ -1,4 +1,6 @@
-# sipedon
+<p align="center">
+         <img alt="Screenshot" src="https://github.com/bczsalba/sipedon/blob/master/assets/screenshot.png" width="100%">
+</p>
 
 [![PyPI - Version](https://img.shields.io/pypi/v/sipedon.svg)](https://pypi.org/project/sipedon)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/sipedon.svg)](https://pypi.org/project/sipedon)
@@ -12,6 +14,7 @@ Sipedon is an aquarium simulator that runs in your terminal. It is currently in 
 - [Naming](#naming)
 - [Installation](#installation)
 - [License](#license)
+
 
 ## Naming
 
