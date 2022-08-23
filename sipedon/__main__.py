@@ -1,23 +1,20 @@
-"""
-fishtank.classes
-----------------
-author: bczsalba
+import time
+from pytermgui import terminal, clear, alt_buffer
 
-
-This module is the entry point for console scripts.
-
-In the future it will run game:main(), but for now
-it calls __init__:main().
-"""
-
-from . import main as _main
+from .classes import Position, Aquarium, Fish
 
 
 def main() -> None:
-    """Call main runtime method"""
+    aquarium = Aquarium(Position(1, 1), terminal.width, terminal.height)
 
-    _main()
+    for _ in range(10):
+        aquarium += Fish()
 
+    with alt_buffer(cursor=False, echo=False):
+        while True:
+            aquarium.update()
 
-if __name__ == "__main__":
-    main()
+            clear()
+            print(aquarium)
+
+            time.sleep(1 / 20)

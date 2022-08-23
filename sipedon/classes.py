@@ -1,9 +1,4 @@
 """
-fishtank.classes
-----------------
-author: bczsalba
-
-
 This module contains the active classes this module defines.
 These are all meant to be agnostic to the system running them,
 and are controlled in a leveled manner. This means that a

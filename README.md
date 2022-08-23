@@ -1,20 +1,37 @@
 # sipedon
-> An interactive aquarium for your terminal, written using pytermgui.
 
-[![PyPI version](https://raw.githubusercontent.com/bczsalba/sipedon/master/assets/version.svg)]()
-[![Pylint quality](https://raw.githubusercontent.com/bczsalba/sipedon/master/assets/quality.svg)](https://github.com/bczsalba/sipedon/blob/master/utils/create_badge.py)
+[![PyPI - Version](https://img.shields.io/pypi/v/sipedon.svg)](https://pypi.org/project/sipedon)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/sipedon.svg)](https://pypi.org/project/sipedon)
 
-The project got its name from the Common Watersnake, also known as `Nerodia Sipedon`. It is meant to be an example project for the `pytermgui` framework, but later down the line might become its own entity as TUI game.
+-----
 
-Updates might not be too frequent, as the parent framework enjoys priority at the moment. This is a passion project of mine however, so I do not plan on abandoning it.
+Sipedon is an aquarium simulator that runs in your terminal. It is currently in its early stages, but eventually it should become an aquarium management game.
 
-It is not available on PyPI at the moment, as I'm not quite sure about the naming yet. As such, to install it you should follow these steps:
-```bash
-git clone https://github.com/bczsalba/sipedon
-cd sipedon
-pip3 install .
+**Table of Contents**
+
+- [Naming](#naming)
+- [Installation](#installation)
+- [License](#license)
+
+## Naming
+
+This project is named after the Common Watersnake, whos latin name is Nerodia Sipedon.
+
+```
+Common Water|snake
+         |     |
+         V     V
+       Fish  Python
 ```
 
-After this, you can run the project by typing `sipedon` if the PIP binary location is in your `$PATH`, or `python3 -m sipedon` otherwise.
+## Installation
 
-![screenshot](https://raw.githubusercontent.com/bczsalba/sipedon/master/assets/screenshot.png)
+```console
+pip install sipedon
+```
+
+## License
+
+`sipedon` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+
+<!-- HATCH README END -->

@@ -1,18 +1,18 @@
-from setuptools import setup, find_packages
+"""Project setup.
 
-setup(
-    name="sipedon",
-    version="0.0.0",
-    include_package_data=True,
-    packages=["sipedon"],
-    license="MIT",
-    description="",
-    long_description=open("README.md").read(),
-    long_description_content_type="text/markdown",
-    install_requires=["pytermgui"],
-    python_requires=">=3.7.0",
-    url="https://github.com/bczsalba/sipedon",
-    author="BcZsalba",
-    author_email="bczsalba@gmail.com",
-    entry_points={"console_scripts": ["sipedon = sipedon:main"]},
-)
+Most of the metadata comes from `pyproject.toml`.
+
+This file is for:
+
+- Adding in the remaining, non-supported bits of data
+- Support of `pip install -e`
+- Support for GitHub's dependency indexing
+"""
+
+from setuptools import setup
+
+# These fields aren't supported properly by setuptools' pyproject.toml
+# reading, so we'll add it manually.
+#
+# `name` is needed for GitHub's dependency tracking to function properly.
+setup(name="sipedon", author="Balázs Cene", url="https://github.com/bczsalba/sipedon")
