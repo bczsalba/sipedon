@@ -4,7 +4,7 @@ import random
 from pytermgui import terminal, clear, alt_buffer, tim
 from pytermgui.input import getch_timeout, keys
 
-from .classes import Position, Aquarium, Fish, Food
+from .aquarium import Position, Aquarium, Fish, Food
 
 
 def center_x(text: str) -> None:
