@@ -11,7 +11,6 @@ tangle around in the source.
 
 from __future__ import annotations
 
-import sys
 import math
 import random
 from dataclasses import dataclass
@@ -99,6 +98,29 @@ class Position:
 
         return iter((self.xcoord, self.ycoord))
 
+    def __getitem__(self, item: int) -> int:
+        return [self.xcoord, self.ycoord][item]
+
+    def fuzz(self, xfuzz: int = 5, yfuzz: int = 3) -> Position:
+        """Returns a position that is _almost_ self.
+
+        Both arguments are used as ranges ]-fuzz;+fuzz[.
+
+        Args:
+            xfuzz: The range-length for our random X offset.
+            yfuzz: The range-length for our random Y offset.
+
+        Returns:
+            A position that has been slightly randomized based on the arguments.
+        """
+
+        xpos, ypos = iter(self)
+
+        return Position(
+            xpos + random.randint(-xfuzz, xfuzz),
+            ypos + random.randint(-yfuzz, yfuzz),
+        )
+
     def distance_to(self, other: Position) -> float:
         """Calculates the distance between two positions.
 
@@ -153,6 +175,36 @@ class AquariumChild(ABC):
         """
 
         self.pos += diff
+
+    def find_closest(
+        self, items: list[AquariumChild], include_self: bool = False
+    ) -> AquariumChild:
+        """Finds the item that is closest to self.
+
+        Args:
+            items: A list of aquarium children to compare against.
+            include_self: When not set, `self` will never be returned.
+
+        Raises:
+            ValueError: Empty list was passed.
+            ValueError: A list only containing `self` was passed, and
+                `include_self` was not set.
+        """
+
+        if len(items) == 0:
+            raise ValueError("Cannot find closest in empty list.")
+
+        pre_filtered = items
+        if not include_self:
+            if all(item is self for item in items):
+                raise ValueError(
+                    f"Cannot find closest in list {items!r} that contains only self."
+                )
+
+            pre_filtered = filter(lambda cld: cld is not self, items)
+
+        get_distance = self.pos.distance_to
+        return min(pre_filtered, key=lambda cld: get_distance(cld.pos))
 
     @abstractmethod
     def update(self, aquarium: Aquarium) -> bool:
@@ -236,7 +288,7 @@ class Fish(AquariumChild):  # pylint: disable=too-many-instance-attributes
     lower_bound = 0.0
     upper_bound = 1.0
 
-    movelimits = [-1, -1]
+    movelimits = [50, 5]
     base_skin = "><'>"
 
     pigment_pool: list[int] = [243, 226, 220, 255]
@@ -343,47 +395,38 @@ class Fish(AquariumChild):  # pylint: disable=too-many-instance-attributes
     def update(self, aquarium: Aquarium) -> bool:
         """Updates the position & path of this fish."""
 
-        if self.target is None and aquarium.has_type(Food):
-            for food in aquarium.food:
-                if food.targeters < 2 and self.pos.distance_to(food.pos) <= 5:
-                    self.target = food
-                    food.targeters += 1
-                    self.update_path(food.pos)
-                    break
+        path_len = len(self._path)
 
-        if self.target is not None:
-            if self.pos.distance_to(self.target.pos) <= 1:
-                self.target.targeters -= 1
-                if self.target in aquarium.children:
-                    aquarium.children.remove(self.target)
-
-                self.target = None
-                return False
-
-            self.update_path(self.target.pos)
-
-            # Do an extra update to avoid getting stuck
+        # Try to follow path
+        if path_len > 0:
             self.pos, self.heading = self._path.pop(0)
-
-        if len(self._path) == 0:
-            rand = random.randint(0, 5)
-            heading = self.heading
-            if rand < 4:
-                for i in range(rand):
-                    if i % 3 == 0:
-                        heading *= -1
-
-                    self._path.append((self.pos, heading))
-
-                return True
-
-            return False
-
-        if self._skip_frame:
-            self._skip_frame = False
             return True
 
-        self.pos, self.heading = self._path.pop(0)
+        rand = random.random()
+
+        # Try to find food
+        if aquarium.has_type(Food):
+            self.target(self.find_closest(aquarium.food))
+
+        # Try to follow closest fish
+        elif rand <= 0.2:
+            self.update_path(self.find_closest(aquarium.fish).pos)
+
+        # Try to look around / idle
+        elif rand <= 0.5:
+            count = random.randint(2, 6)
+            heading = self.heading
+
+            for i in range(count):
+                if random.random() < 0.2:
+                    heading *= -1
+
+                self._path.append((self.pos, heading))
+
+        # Request new endpoint from aquarium
+        else:
+            self.update_path(aquarium.get_poi())
+
         return True
 
     def move_origin(self, diff: Position) -> None:
@@ -411,11 +454,11 @@ class Fish(AquariumChild):  # pylint: disable=too-many-instance-attributes
         diff = dest - self.pos
 
         xlimit, ylimit = self.movelimits
-        if abs(diff.xcoord) > xlimit > 0:
+        if xlimit != -1 and abs(diff.xcoord) > xlimit:
             sign = 1 if diff.xcoord > 0 else -1
             endx = startx + sign * xlimit
 
-        if ylimit > 0:
+        if ylimit != -1 and abs(diff.ycoord) > ylimit:
             sign = 1 if diff.ycoord > 0 else -1
             endy = starty + sign * ylimit
 
@@ -437,10 +480,6 @@ class Fish(AquariumChild):  # pylint: disable=too-many-instance-attributes
         while True:
             pos = Position(startx, starty)
 
-            # TODO: Check for position validity
-            # if not self._position_valid(pos):
-            #     break
-
             self._path.append((pos, heading))
             if startx == endx and starty == endy:
                 break
@@ -459,6 +498,8 @@ class Fish(AquariumChild):  # pylint: disable=too-many-instance-attributes
 class Aquarium:
     """An container for all of our fish."""
 
+    poi_update_percent: float = 0.2
+
     def __init__(
         self, pos: Position | tuple[int, int], width: int, height: int
     ) -> None:
@@ -475,6 +516,9 @@ class Aquarium:
         self.height = height
 
         self.children: list[AquariumChild] = []
+        self._poi_calls = 0
+        self._poi_target_calls = 0
+        self.get_poi()
 
     @property
     def fish(self) -> list[Fish]:
@@ -499,6 +543,29 @@ class Aquarium:
         """
 
         return any(isinstance(child, ttype) for child in self.children)
+
+    def get_poi(self) -> Position:
+        """Gets and potentially updates the current point of interest.
+
+        Updates happen when the number of calls to this function exceeds
+        `self.poi_update_percent * len(self.fish)`.
+
+        Returns:
+            The current point of interest that all fish should follow when
+            they have nothing better to do.
+        """
+
+        if self._poi_calls >= self._poi_target_calls:
+            self._poi = Position(
+                self.pos[0] + random.randint(0, self.width),
+                self.pos[1] + random.randint(0, self.height),
+            )
+            self._poi_calls = 0
+            self._poi_target_calls = self.poi_update_percent * len(self.fish)
+
+        self._poi_calls += 1
+
+        return self._poi.fuzz()
 
     def __iadd__(self, other: object) -> Aquarium:
         """Calls `add` with the given object."""
@@ -616,15 +683,11 @@ class Aquarium:
 
         for child in self.children:
             if not child.update(self):
-                if isinstance(child, Fish):
-                    new = self._get_destination(child)
-                    child.update_path(new)
-
-                elif isinstance(child, Food):
+                if isinstance(child, Food):
                     self.children.remove(child)
+                    continue
 
             self.clamp(child)
-
             child.lifetime += 1
 
         return True

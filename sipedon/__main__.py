@@ -26,7 +26,7 @@ def main() -> None:
         aquarium += Fish(pos=Position(x, y))
 
     paused = False
-    frametime = 1 / 20
+    frametime = 1 / 15
 
     with alt_buffer(cursor=False, echo=False):
         aquarium.show()
